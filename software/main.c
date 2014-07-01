@@ -68,10 +68,9 @@ void switch_port(uint8_t port, uint8_t value) {
 volatile uint8_t  stage = STAGE_FLOOR
                  ,port = 0
                  ,val = 0
-                 ,tmp = 0
-                 ,led_off = 0;
+                 ,tmp = 0;
 
-        uint16_t led_cnt = 0;
+        uint8_t led_cnt = 0;
 
 ISR(USART_RXC_vect){
 
@@ -162,7 +161,6 @@ ISR(USART_RXC_vect){
             if( data == '\r' ) {
 
                 PORTD |= (1<<PIN4);
-                led_off = 1;
                 led_cnt = 200;
 
                 if( port == 0xFF ) {
@@ -207,13 +205,10 @@ int main (void) {
     sei();
 
     while(1) {
-        if(led_off==1) {
-            if(led_cnt == 0) {
-                led_off = 0;
-                PORTD &= ~(1<<PIN4);
-            } else {
-                led_cnt--;    
-            }
+        if(led_cnt == 0) {
+            PORTD &= ~(1<<PIN4);
+        } else {
+            led_cnt--;    
         }
     }
 
