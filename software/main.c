@@ -205,10 +205,10 @@ int main (void) {
     sei();
 
     while(1) {
-        if(led_cnt == 0) {
-            PORTD &= ~(1<<PIN4);
+        if(led_cnt > 0) {
+            led_cnt--;
         } else {
-            led_cnt--;    
+            PORTD &= ~(1<<PIN4);    
         }
     }
 
